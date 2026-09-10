@@ -1,0 +1,12 @@
+# Build output — Cloudflare Pages regenerates it with `npm run build`
+dist/
+
+# Dependencies / logs
+node_modules/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
