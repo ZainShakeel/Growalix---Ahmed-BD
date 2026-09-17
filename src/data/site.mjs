@@ -9,7 +9,7 @@ export const brand = {
   nameB: 'alix',
   tagline: 'Digital growth agency',
   description:
-    'Growalix is a full-service digital growth agency — email & LinkedIn outreach, lead generation, data extraction, SEO/AEO/GEO, paid media, web & app development, content and YouTube automation.',
+    'Growalix is a full-service digital growth agency — email, SMS & WhatsApp, LinkedIn and social media marketing, data extraction, lead generation, SEO/GEO/AEO, paid media, web & app development, content creation and YouTube automation.',
   url: 'https://growalix.com', // PLACEHOLDER — production domain
   email: 'hello@growalix.com', // PLACEHOLDER
   phone: '+00 000 000 0000', // PLACEHOLDER
@@ -28,15 +28,33 @@ export const brand = {
   },
 };
 
-// PLACEHOLDER numbers — replace with the agency's real figures.
+// Headline claim shown beside the hero eyebrow.
+export const experience = '10 Years of market experience';
+
+// Figures the agency can stand behind. Confirm each one before launch.
 export const heroStats = [
-  { value: 350, suffix: '+', label: 'Campaigns launched' },
-  { value: 12, suffix: 'M+', label: 'Emails delivered' },
-  { value: 4.9, suffix: '/5', label: 'Client rating', decimals: 1 },
-  { value: 40, suffix: 'K+', label: 'Leads generated' },
+  { value: 10, suffix: '+', label: 'Years of market experience' },
+  { value: 12, suffix: '', label: 'Growth services' },
+  { value: 12, suffix: '+', label: 'Brands served' },
+  { value: 100, suffix: '%', label: 'Account & data ownership' },
 ];
 
-export const trustedBy = ['HubSpot', 'Apollo', 'Shopify', 'Webflow', 'Meta', 'Google', 'LinkedIn', 'TikTok', 'Semrush', 'Clay'];
+// Real companies the agency has worked with (from the client brief).
+// Add any remaining companies to this list.
+export const trustedBy = [
+  'Software Finder',
+  'The Hexaa',
+  'Nurture Space',
+  'NRT Solutions',
+  'MatrixTribe',
+  'Dtech Systems',
+  'Renderland',
+  'Sybrid',
+  'Kadawar Group',
+  'Takmeel Group',
+  'Arclab Solutions',
+  'The Brandspot',
+];
 
 export const whyUs = [
   { icon: 'zap', title: 'Fast launch', copy: 'Campaigns live in days, not quarters.' },
@@ -47,10 +65,12 @@ export const whyUs = [
   { icon: 'chart', title: 'Result driven', copy: 'We report pipeline and revenue, not impressions.' },
 ];
 
-export const scores = [
-  { label: 'Campaign deliverability', value: 97 },
-  { label: 'On-time delivery', value: 95 },
-  { label: 'Client retention', value: 92 },
+// What clients get across every service — shown instead of invented percentages.
+export const results = [
+  { icon: 'target', title: 'Qualified pipeline', copy: 'Booked meetings and enquiries, not vanity metrics.' },
+  { icon: 'trendingUp', title: 'Lower cost per lead', copy: 'Budget moved to the channels that actually convert.' },
+  { icon: 'zap', title: 'Faster launches', copy: 'Campaigns, sites and channels live in weeks, not quarters.' },
+  { icon: 'refresh', title: 'Compounding growth', copy: 'Search, content and outreach that build on each other.' },
 ];
 
 export const process = [

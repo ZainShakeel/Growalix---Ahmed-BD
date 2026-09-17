@@ -1,8 +1,7 @@
 import { icon } from '../icons.mjs';
 import { page, ctaBand } from '../layout.mjs';
 import { brand, faqs } from '../data/site.mjs';
-import { services } from '../data/services.mjs';
-import { studioSection, workSection, whySection, processSection, testimonialsSection, pricingSection, faqSection } from '../sections.mjs';
+import { studioSection, workSection, whySection, processSection, testimonialsSection, pricingSection, faqSection, contactForm } from '../sections.mjs';
 import { pageHero } from './services.mjs';
 
 const d = (i) => `style="--d:${i * 80}ms"`;
@@ -55,22 +54,7 @@ export function contact() {
         : `<div class="card info-item reveal" ${d(i)}>${inner}</div>`;
     })
     .join('')}</div>
-  <form class="card form reveal" ${d(1)} data-contact-form data-to="${brand.email}"${brand.formEndpoint ? ` data-endpoint="${brand.formEndpoint}"` : ''} novalidate>
-    <h2 class="h-md">Start a project</h2>
-    <p class="muted" style="margin:.6rem 0 2rem">Fields marked * are required.</p>
-    <div class="form-grid">
-      <div class="field"><label for="f-name">Full name *</label><input id="f-name" name="name" autocomplete="name" required></div>
-      <div class="field"><label for="f-email">Work email *</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
-      <div class="field"><label for="f-company">Company / website</label><input id="f-company" name="company" autocomplete="organization"></div>
-      <div class="field"><label for="f-budget">Monthly budget</label><select id="f-budget" name="budget"><option value="">Select a range</option><option>Under $1,000</option><option>$1,000 – $3,000</option><option>$3,000 – $7,500</option><option>$7,500+</option><option>One-off project</option></select></div>
-      <fieldset class="field full" style="border:0;padding:0;margin:0"><legend style="font-size:.85rem;font-weight:600;margin-bottom:.6rem">Services you’re interested in</legend><div class="chips">${services
-        .map((s) => `<label><input type="checkbox" name="services" value="${s.title}"><span>${s.title}</span></label>`)
-        .join('')}</div></fieldset>
-      <div class="field full"><label for="f-msg">Tell us about your goals</label><textarea id="f-msg" name="message" placeholder="What are you selling, who to, and what does success look like in 90 days?"></textarea></div>
-    </div>
-    <button class="btn btn-primary" type="submit" style="margin-top:1.75rem">Send message ${icon('send')}</button>
-    <p class="form-msg" role="status" aria-live="polite"></p>
-  </form>
+  ${contactForm(root, 'c')}
 </div></section>
 ${faqSection(root, faqs)}`;
   return page({ root, title: 'Contact', active: 'contact', body, path: 'contact.html' });

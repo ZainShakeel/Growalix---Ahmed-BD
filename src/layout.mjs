@@ -79,8 +79,8 @@ function footer(root) {
         <a href="${s.twitter}" aria-label="X / Twitter" target="_blank" rel="noopener">${icon('twitter')}</a>
       </div>
     </div>
-    ${col('Services', services.slice(0, 5).map((x) => [x.title, `${root}services/${x.slug}.html`]))}
-    ${col('More services', services.slice(5).map((x) => [x.title, `${root}services/${x.slug}.html`]))}
+    ${col('Services', services.slice(0, 6).map((x) => [x.title, `${root}services/${x.slug}.html`]))}
+    ${col('More services', services.slice(6).map((x) => [x.title, `${root}services/${x.slug}.html`]))}
     ${col('Company', [['About', `${root}about.html`], ['Work', `${root}work.html`], ['Pricing', `${root}pricing.html`], ['Contact', `${root}contact.html`], [brand.email, `mailto:${brand.email}`]])}
   </div>
   <div class="foot-bottom"><span>© <span data-year>2026</span> ${brand.name}. All rights reserved.</span><span>${brand.location}</span></div>

@@ -1,10 +1,10 @@
 import { icon } from './icons.mjs';
 import { eyebrow, mock, logoMark } from './layout.mjs';
 import { services } from './data/services.mjs';
-import { heroStats, trustedBy, whyUs, scores, process, timeline, testimonials, pricing, faqs, work, posts } from './data/site.mjs';
+import { brand, heroStats, trustedBy, whyUs, results, process, timeline, testimonials, pricing, faqs, work, posts } from './data/site.mjs';
 
 const d = (i, step = 80) => `style="--d:${i * step}ms"`;
-const slugFor = { Outreach: 'email-marketing', 'Paid Media': 'paid-media', SEO: 'seo-aeo-geo', 'Web & App': 'app-development' };
+const slugFor = { Outreach: 'email-marketing', 'Paid Media': 'paid-media', SEO: 'seo-geo-aeo', 'Web & App': 'web-app-development' };
 
 // ---------- hero ----------
 const spark = (pts) => `<svg viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M${pts}" fill="none" stroke="#2f66ff" stroke-width="2" stroke-linecap="round"/></svg>`;
@@ -45,7 +45,7 @@ export const heroStatsHtml = () =>
 
 // ---------- marquee ----------
 export const trusted = () =>
-  `<section class="trusted"><p>Platforms &amp; tools we master</p><div class="marquee"><div class="marquee-track">${[...trustedBy, ...trustedBy]
+  `<section class="trusted"><p>Brands we have worked with</p><div class="marquee"><div class="marquee-track">${[...trustedBy, ...trustedBy]
     .map((t) => `<span>${t}</span>`)
     .join('')}</div></div></section>`;
 
@@ -58,13 +58,9 @@ export const serviceCard = (root, s, i) => `<a class="card service-card reveal" 
 
 export function servicesSection(root, { head = true } = {}) {
   return `<section class="section" id="services"><div class="container">
-  ${head ? `<div class="section-head split"><div class="reveal">${eyebrow('Capabilities')}<h2 class="h-lg">Ten services,<br><span class="text-gradient">one growth team.</span></h2></div><p class="lead reveal" ${d(1)}>Every channel your customers use — run by specialists who share one strategy, one dashboard and one goal: revenue.</p></div>` : ''}
+  ${head ? `<div class="section-head split"><div class="reveal">${eyebrow('Capabilities')}<h2 class="h-lg">Twelve services,<br><span class="text-gradient">one growth team.</span></h2></div><p class="lead reveal" ${d(1)}>Every channel your customers use — run by specialists who share one strategy, one dashboard and one goal: revenue.</p></div>` : ''}
   <div class="services-grid">
     ${services.map((s, i) => serviceCard(root, s, i)).join('')}
-    <div class="card svc-cta span-2 reveal" ${d(1)}>
-      <div><h3>Not sure where to start?</h3><p>Get a free growth audit and a custom channel plan within 48 hours.</p></div>
-      <a class="btn btn-white" href="${root}contact.html">Get my free audit ${icon('arrowUpRight')}</a>
-    </div>
   </div>
 </div></section>`;
 }
@@ -83,12 +79,12 @@ export function studioSection(root) {
     <span class="ring" style="width:78%;aspect-ratio:1"></span><span class="ring" style="width:54%;aspect-ratio:1"></span>
     <span class="core float-slow">${logoMark()}</span>
     ${chips.map(([ic, t, pos], i) => `<span class="chip glass float" style="${pos};animation-delay:-${i * 1.3}s">${icon(ic)}${t}</span>`).join('')}
-    <div class="studio-badge glass"><strong class="text-gradient">10</strong><span>Growth services</span></div>
+    <div class="studio-badge glass"><strong class="text-gradient">12</strong><span>Growth services</span></div>
   </div>
   <div>
     <div class="reveal">${eyebrow('The agency')}</div>
     <h2 class="h-lg reveal" ${d(1)} style="margin-top:1.5rem">A lean team with an <span class="text-gradient">unreasonable</span> standard.</h2>
-    <p class="lead reveal" ${d(2)} style="margin-top:1.5rem">We started with one channel and one rule: never run a campaign we wouldn’t pay for ourselves. Today that rule covers ten services — and it still kills more ideas than any deadline.</p>
+    <p class="lead reveal" ${d(2)} style="margin-top:1.5rem">We started with one channel and one rule: never run a campaign we wouldn’t pay for ourselves. Today that rule covers twelve services — and it still kills more ideas than any deadline.</p>
     <div class="mv">
       <div class="card reveal" ${d(2)}>${icon('target')}<h4>Mission</h4><p>Turn marketing spend into measurable, compounding revenue.</p></div>
       <div class="card reveal" ${d(3)}>${icon('compass')}<h4>Vision</h4><p>Be the only growth partner a business ever needs.</p></div>
@@ -123,9 +119,9 @@ export const whySection = () => `<section class="section"><div class="container 
   <div>
     <div class="reveal">${eyebrow('Why Growalix')}</div>
     <h2 class="h-lg reveal" ${d(1)} style="margin-top:1.5rem">The reasons clients <span class="text-gradient">stay for years.</span></h2>
-    <p class="lead reveal" ${d(2)} style="margin-top:1.5rem">Most of our engagements turn into long-term partnerships. Here is what that trust is built on.</p>
-    <div class="score-card reveal" ${d(3)}>${scores
-      .map((s) => `<div class="score"><div class="row">${s.label}<span>${s.value}%</span></div><div class="track"><i data-w="${s.value}"></i></div></div>`)
+    <p class="lead reveal" ${d(2)} style="margin-top:1.5rem">Most of our engagements turn into long-term partnerships. Here is what every service is measured against.</p>
+    <div class="result-card reveal" ${d(3)}>${results
+      .map((r) => `<div class="result-row"><span class="ic">${icon(r.icon)}</span><div><strong>${r.title}</strong><span>${r.copy}</span></div></div>`)
       .join('')}</div>
   </div>
   <div class="feat-grid">${whyUs.map((w, i) => `<div class="card feat reveal" ${d(i % 2)}><span class="ic">${icon(w.icon)}</span><h4>${w.title}</h4><p>${w.copy}</p></div>`).join('')}</div>
@@ -177,12 +173,37 @@ export function pricingSection(root, { head = true } = {}) {
 }
 
 // ---------- insights ----------
-const postSlug = { SEO: 'seo-aeo-geo', Outreach: 'email-marketing', 'Paid Media': 'paid-media' };
+const postSlug = { SEO: 'seo-geo-aeo', Outreach: 'email-marketing', 'Paid Media': 'paid-media' };
 export const postsSection = (root) => `<section class="section" style="padding-top:0"><div class="container">
   <div class="section-head split"><div class="reveal">${eyebrow('Insights')}<h2 class="h-lg">Notes from the<br><span class="text-gradient">growth floor.</span></h2></div><div class="reveal" ${d(1)} style="justify-self:end"><a class="btn btn-ghost btn-sm" href="${root}services.html">All services ${icon('arrowUpRight')}</a></div></div>
   <div class="grid-3">${posts
     .map((p, i) => `<a class="card post-card reveal" ${d(i)} href="${root}services/${postSlug[p.tag]}.html"><div class="media">${mock(p.theme)}</div><div class="body"><div class="meta"><b>${p.tag}</b>${p.date}</div><h3>${p.title}</h3><span class="more">Explore the service ${icon('arrowUpRight')}</span></div></a>`)
     .join('')}</div>
+</div></section>`;
+
+// ---------- contact form (home + contact page) ----------
+export function contactForm(root, id = 'f') {
+  return `<form class="card form reveal" ${d(1)} data-contact-form data-to="${brand.email}"${brand.formEndpoint ? ` data-endpoint="${brand.formEndpoint}"` : ''} novalidate>
+  <h2 class="h-md">Start a project</h2>
+  <p class="muted" style="margin:.6rem 0 2rem">Fields marked * are required.</p>
+  <div class="form-grid">
+    <div class="field"><label for="${id}-name">Full name *</label><input id="${id}-name" name="name" autocomplete="name" required></div>
+    <div class="field"><label for="${id}-email">Work email *</label><input id="${id}-email" name="email" type="email" autocomplete="email" required></div>
+    <div class="field"><label for="${id}-company">Company / website</label><input id="${id}-company" name="company" autocomplete="organization"></div>
+    <div class="field"><label for="${id}-budget">Monthly budget</label><select id="${id}-budget" name="budget"><option value="">Select a range</option><option>Under $1,000</option><option>$1,000 – $3,000</option><option>$3,000 – $7,500</option><option>$7,500+</option><option>One-off project</option></select></div>
+    <fieldset class="field full" style="border:0;padding:0;margin:0"><legend style="font-size:.85rem;font-weight:600;margin-bottom:.6rem">Services you’re interested in</legend><div class="chips">${services
+      .map((s, i) => `<label><input type="checkbox" id="${id}-s${i}" name="services" value="${s.title}"><span>${s.title}</span></label>`)
+      .join('')}</div></fieldset>
+    <div class="field full"><label for="${id}-msg">Tell us about your goals</label><textarea id="${id}-msg" name="message" placeholder="What are you selling, who to, and what does success look like in 90 days?"></textarea></div>
+  </div>
+  <button class="btn btn-primary" type="submit" style="margin-top:1.75rem">Send message ${icon('send')}</button>
+  <p class="form-msg" role="status" aria-live="polite"></p>
+</form>`;
+}
+
+export const contactFormSection = (root) => `<section class="section" id="start" style="padding-top:2rem"><div class="container">
+  <div class="section-head center reveal">${eyebrow('Get started')}<h2 class="h-lg">Tell us what you need,<br><span class="text-gradient">we’ll map the plan.</span></h2><p class="lead">Send us your goals and we’ll reply within one business day with next steps and a free audit.</p></div>
+  <div style="max-width:880px;margin-inline:auto">${contactForm(root, 'h')}</div>
 </div></section>`;
 
 // ---------- faq ----------

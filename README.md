@@ -1,6 +1,6 @@
 # Growalix — Digital Agency Website
 
-A fast, static, multi-page agency website (17 pages) styled after the *Trixel* AI-startup / digital-agency template, rebranded with the Growalix logo palette (navy `#0B1A45`, blue `#2454FF`, cyan `#25C6F5`). Light + dark mode, fully responsive, no frameworks and no runtime dependencies.
+A fast, static, multi-page agency website (19 pages) styled after the *Trixel* AI-startup / digital-agency template, rebranded with the Growalix logo palette (navy `#0B1A45`, blue `#2454FF`, cyan `#25C6F5`). Light + dark mode, fully responsive, no frameworks and no runtime dependencies.
 
 ## Quick start
 
@@ -19,7 +19,7 @@ Requires Node.js 18+. There is nothing to `npm install`.
 | --- | --- |
 | Home | `dist/index.html` |
 | Services overview | `dist/services.html` |
-| 10 service pages | `dist/services/<slug>.html` — email-marketing, linkedin-marketing, data-extraction, lead-generation, seo-aeo-geo, paid-media, web-development, app-development, content-creation, youtube-automation |
+| 12 service pages | `dist/services/<slug>.html` — email-marketing, sms-whatsapp-marketing, linkedin-marketing, social-media-marketing, data-extraction, lead-generation, seo-geo-aeo, paid-media, web-app-development, content-creation, youtube-automation, account-subscription-services |
 | About, Work, Pricing, Contact, 404 | `dist/*.html` |
 | SEO | `dist/sitemap.xml`, `dist/robots.txt` |
 
@@ -29,7 +29,7 @@ Requires Node.js 18+. There is nothing to `npm install`.
 | --- | --- |
 | Brand name, email, phone, WhatsApp, socials, domain, form backend | `src/data/site.mjs` → `brand` |
 | Stats, testimonials, pricing, FAQs, case studies, process | `src/data/site.mjs` |
-| The 10 services (copy, deliverables, tools, stats) | `src/data/services.mjs` |
+| The 12 services (copy, deliverables, tools, outcomes, reviews) | `src/data/services.mjs` |
 | Colours, fonts, spacing, components | `assets/css/style.css` (tokens at the top) |
 | Interactions (theme toggle, slider, filters, form) | `assets/js/main.js` |
 | Page layouts / sections | `src/pages/*.mjs`, `src/sections.mjs`, `src/layout.mjs` |
