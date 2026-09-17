@@ -134,7 +134,7 @@ export const pricing = [
     name: 'Scale',
     blurb: 'For brands that want a full growth department.',
     monthly: 3999,
-    features: ['All 10 services available', 'Dedicated account manager', 'Web / app dev sprints', 'Content & YouTube automation', 'Custom dashboards', 'Priority 24/7 support'],
+    features: ['All 12 services available', 'Dedicated account manager', 'Web / app dev sprints', 'Content & YouTube automation', 'Custom dashboards', 'Priority 24/7 support'],
     cta: 'Talk to sales',
   },
 ];

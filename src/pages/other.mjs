@@ -31,7 +31,7 @@ export function pricingPage() {
   const body = `${pageHero(root, [['Pricing']], 'Pricing', 'Clear pricing,<br><span class="text-gradient">serious results.</span>', 'Simple monthly plans for growing teams. Need a single service or a one-off project? We quote those too — usually within 48 hours.')}
 ${pricingSection(root, { head: false })}
 ${faqSection(root)}
-${ctaBand(root, 'Need a custom plan?', 'Mix and match any of our ten services. Tell us what you need and we’ll build a plan around your budget.')}`;
+${ctaBand(root, 'Need a custom plan?', 'Mix and match any of our twelve services. Tell us what you need and we’ll build a plan around your budget.')}`;
   return page({ root, title: 'Pricing', active: 'pricing', body, path: 'pricing.html' });
 }
 
