@@ -7,8 +7,8 @@ let markId = 0;
 export function logoMark() {
   const id = `lg${markId++}`;
   return `<svg viewBox="0 0 112 112" aria-hidden="true"><defs>
-<linearGradient id="${id}r" x1=".15" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#4B84FF"/><stop offset=".45" stop-color="#2454FF"/><stop offset="1" stop-color="#1330A8"/></linearGradient>
-<linearGradient id="${id}a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#2454FF"/><stop offset="1" stop-color="#5B90FF"/></linearGradient></defs>
+<linearGradient id="${id}r" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset=".55" stop-color="#6D8CF8"/><stop offset="1" stop-color="#3EC5F6"/></linearGradient>
+<linearGradient id="${id}a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#3EC5F6"/></linearGradient></defs>
 <path fill="url(#${id}r)" d="M61.99 12.7A46 46 0 1 0 97.23 42.27L79.37 48.77A27 27 0 1 1 58.69 31.41Z"/>
 <rect x="53" y="49" width="45" height="18" rx="3" fill="url(#${id}r)"/>
 <path d="M38 77 83 32" stroke="url(#${id}a)" stroke-width="15" stroke-linecap="round" fill="none"/>
@@ -16,7 +16,7 @@ export function logoMark() {
 }
 
 export const logo = (root) =>
-  `<a href="${root}index.html" class="logo" aria-label="${brand.name} home">${logoMark()}<span><span class="a">${brand.nameA}</span><span class="b">${brand.nameB}</span></span></a>`;
+  `<a href="${root}index.html" class="logo" aria-label="${brand.name} home">${logoMark()}<span class="logo-word">${brand.name}</span></a>`;
 
 const nav = [
   { label: 'Home', href: 'index.html', key: 'home' },
@@ -101,7 +101,7 @@ export function page({ root = '', title, description = brand.description, active
 <meta property="og:title" content="${full}">
 <meta property="og:description" content="${description}">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#2454FF">
+<meta name="theme-color" content="#8B5CF6">
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

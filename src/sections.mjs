@@ -7,7 +7,7 @@ const d = (i, step = 80) => `style="--d:${i * step}ms"`;
 const slugFor = { Outreach: 'email-marketing', 'Paid Media': 'paid-media', SEO: 'seo-geo-aeo', 'Web & App': 'web-app-development' };
 
 // ---------- hero ----------
-const spark = (pts) => `<svg viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M${pts}" fill="none" stroke="#2f66ff" stroke-width="2" stroke-linecap="round"/></svg>`;
+const spark = (pts) => `<svg viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M${pts}" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/></svg>`;
 const barHeights = [35, 52, 44, 60, 38, 70, 55, 48, 76, 62, 58, 84, 66, 72, 50, 88, 70, 64, 92, 78, 68, 95, 80, 74, 98, 86];
 
 export function heroVisual() {
@@ -26,7 +26,7 @@ export function heroVisual() {
         </div>
         <div class="chart-card">Pipeline growth<div class="bars">${barHeights.map((h, i) => `<i style="height:${h}%;animation-delay:${i * 30}ms"></i>`).join('')}</div></div>
         <div class="dash-row">
-          <div class="chart-card line-chart">Organic &amp; AI traffic<svg viewBox="0 0 200 70" preserveAspectRatio="none"><defs><linearGradient id="lcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f66ff" stop-opacity=".4"/><stop offset="1" stop-color="#2f66ff" stop-opacity="0"/></linearGradient></defs><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8V70H0Z" fill="url(#lcg)"/><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8" fill="none" stroke="#2f66ff" stroke-width="2"/></svg></div>
+          <div class="chart-card line-chart">Organic &amp; AI traffic<svg viewBox="0 0 200 70" preserveAspectRatio="none"><defs><linearGradient id="lcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".4"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient></defs><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8V70H0Z" fill="url(#lcg)"/><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8" fill="none" stroke="#8b5cf6" stroke-width="2"/></svg></div>
           <div class="chart-card">Channel mix<div class="donut"></div></div>
         </div>
       </div>
