@@ -131,19 +131,83 @@ export const ambient = `<div class="ambient" aria-hidden="true"><div class="blob
 
 export const eyebrow = (t) => `<span class="eyebrow">${t}</span>`;
 
-// Decorative UI mockups (no external images needed)
+// Decorative illustrations for the case-study cards. Each one is a complete,
+// self-contained SVG: all geometry and colour lives inside the markup, so it
+// cannot be broken by unrelated stylesheet edits. Drawn on a 400×240 canvas
+// and scaled to fill its container.
+//
+// `--mk-*` custom properties let the card theme the artwork (see .mock in the
+// stylesheet); the fallbacks keep it correct if the SVG is ever used alone.
+let mockId = 0;
 export function mock(theme) {
-  if (theme === 'mail')
-    return `<div class="mock t-mail"><div class="m-win m-mail"><div class="top"><i></i><i></i><i></i></div><ul>${[1, 2, 3, 4]
-      .map((n) => `<li><span class="av"></span><span class="ln"><b></b><u></u></span>${n % 2 ? '<span class="tag">Replied</span>' : ''}</li>`)
-      .join('')}</ul></div></div>`;
-  if (theme === 'ads')
-    return `<div class="mock t-ads"><div class="m-ad"><div class="post"><div class="img"></div><div class="cta"><span>Sponsored · 4.6x ROAS</span><b>Shop now</b></div></div><div class="roas">${[30, 45, 38, 60, 52, 75, 68, 90, 100]
-      .map((h) => `<i style="height:${h}%"></i>`)
-      .join('')}</div></div></div>`;
-  if (theme === 'seo')
-    return `<div class="mock t-seo"><div class="m-win"><div class="top"><i></i><i></i><i></i></div><div class="m-serp"><div class="q">${icon('search')} best growth agency</div><div class="ai"><b>AI OVERVIEW</b><div class="r" style="margin-top:6px"><u></u><u style="width:80%"></u></div></div>${[1, 2]
-      .map(() => `<div class="r"><b></b><u></u><u style="width:70%"></u></div>`)
-      .join('')}</div></div></div>`;
-  return `<div class="mock t-app"><div class="m-phone"><div class="scr"><div class="notch"></div><span>Total bookings</span><span class="big">$24,850</span><div class="tile"></div><div class="row"><div class="tile"></div><div class="tile"></div></div><div class="tile"></div></div></div></div>`;
+  const u = `mk${mockId++}`;
+  const open = `<svg class="mock" viewBox="0 0 400 240" preserveAspectRatio="xMidYMid slice" role="img" aria-hidden="true"><defs>
+<linearGradient id="${u}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#854ff7"/><stop offset="1" stop-color="#29bdfd"/></linearGradient>
+<linearGradient id="${u}bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--mk-bg-a,#f6f2ff)"/><stop offset="1" stop-color="var(--mk-bg-b,#eaf6ff)"/></linearGradient></defs>
+<rect width="400" height="240" fill="url(#${u}bg)"/>`;
+  const card = 'var(--mk-card,#fff)';
+  const line = 'var(--mk-line,#dfd8f5)';
+  const dim = 'var(--mk-dim,#efeaff)';
+
+  // Email — an inbox where replies are coming back in.
+  if (theme === 'mail') {
+    const rows = [0, 1, 2].map((i) => {
+      const y = 70 + i * 46;
+      const replied = i !== 1;
+      return `<rect x="40" y="${y}" width="320" height="36" rx="8" fill="${card}"/>
+<circle cx="62" cy="${y + 18}" r="11" fill="url(#${u}g)" opacity="${replied ? 1 : 0.35}"/>
+<rect x="82" y="${y + 10}" width="${replied ? 92 : 120}" height="6" rx="3" fill="${line}"/>
+<rect x="82" y="${y + 22}" width="${replied ? 150 : 108}" height="5" rx="2.5" fill="${dim}"/>
+${replied ? `<rect x="286" y="${y + 11}" width="56" height="15" rx="7.5" fill="url(#${u}g)" opacity=".16"/><path d="M299 18.5h8m-8 0 3-3m-3 3 3 3" transform="translate(0 ${y})" stroke="#854ff7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="311" y="${y + 15}" width="24" height="6" rx="3" fill="#854ff7" opacity=".5"/>` : ''}`;
+    }).join('');
+    return `${open}
+<rect x="40" y="34" width="320" height="22" rx="8" fill="${card}"/>
+<circle cx="56" cy="45" r="4" fill="url(#${u}g)"/><rect x="68" y="42" width="70" height="6" rx="3" fill="${line}"/>
+${rows}
+<g transform="translate(290 204)"><rect width="70" height="22" rx="11" fill="url(#${u}g)"/><rect x="16" y="9" width="38" height="4" rx="2" fill="#fff" opacity=".9"/></g>
+</svg>`;
+  }
+
+  // LinkedIn — a profile card above a post that is gaining traction.
+  if (theme === 'seo') {
+    return `${open}
+<rect x="36" y="28" width="328" height="74" rx="12" fill="${card}"/>
+<rect x="36" y="28" width="328" height="26" rx="12" fill="url(#${u}g)" opacity=".18"/>
+<circle cx="74" cy="62" r="20" fill="url(#${u}g)"/>
+<path d="M68 70v-11m0-5.5v.01M80 70v-6a4 4 0 0 0-8 0v6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+<rect x="104" y="52" width="104" height="7" rx="3.5" fill="${line}"/>
+<rect x="104" y="66" width="150" height="5" rx="2.5" fill="${dim}"/>
+<rect x="104" y="78" width="72" height="5" rx="2.5" fill="${dim}"/>
+<rect x="36" y="116" width="328" height="96" rx="12" fill="${card}"/>
+<rect x="56" y="134" width="180" height="6" rx="3" fill="${line}"/>
+<rect x="56" y="150" width="260" height="5" rx="2.5" fill="${dim}"/>
+<rect x="56" y="163" width="214" height="5" rx="2.5" fill="${dim}"/>
+<g transform="translate(56 182)">
+  <rect width="54" height="18" rx="9" fill="url(#${u}g)" opacity=".16"/>
+  <path d="M13 12.5V8m5 4.5v-7m5 7V6" stroke="#854ff7" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <rect x="30" y="7" width="16" height="4" rx="2" fill="#854ff7" opacity=".55"/>
+</g>
+<g transform="translate(120 182)"><rect width="54" height="18" rx="9" fill="url(#${u}g)" opacity=".16"/><rect x="12" y="7" width="30" height="4" rx="2" fill="#854ff7" opacity=".45"/></g>
+<path d="M248 196c14-4 26-14 32-28" stroke="url(#${u}g)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+<path d="M276 164h8v8" stroke="url(#${u}g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>`;
+  }
+
+  // Paid media — an ad creative beside a cost-per-lead curve that falls.
+  return `${open}
+<rect x="36" y="30" width="150" height="180" rx="12" fill="${card}"/>
+<rect x="50" y="44" width="122" height="78" rx="8" fill="url(#${u}g)" opacity=".85"/>
+<circle cx="86" cy="74" r="12" fill="#fff" opacity=".9"/>
+<path d="M58 112l26-24 20 18 16-14 22 20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".9"/>
+<rect x="50" y="134" width="88" height="6" rx="3" fill="${line}"/>
+<rect x="50" y="148" width="58" height="5" rx="2.5" fill="${dim}"/>
+<rect x="50" y="172" width="122" height="24" rx="12" fill="url(#${u}g)"/>
+<rect x="88" y="182" width="46" height="5" rx="2.5" fill="#fff" opacity=".9"/>
+<rect x="206" y="30" width="158" height="180" rx="12" fill="${card}"/>
+<rect x="224" y="48" width="64" height="6" rx="3" fill="${line}"/>
+<path d="M224 72c22 6 34 26 52 34s38 10 62 12" stroke="url(#${u}g)" stroke-width="3" stroke-linecap="round" fill="none"/>
+<path d="M224 72c22 6 34 26 52 34s38 10 62 12v40H224z" fill="url(#${u}g)" opacity=".12"/>
+<circle cx="338" cy="118" r="5" fill="#29bdfd"/>
+${[64, 52, 56, 38, 42, 26].map((h, i) => `<rect x="${224 + i * 20}" y="${194 - h}" width="10" height="${h}" rx="4" fill="url(#${u}g)" opacity="${0.85 - i * 0.1}"/>`).join('')}
+</svg>`;
 }
