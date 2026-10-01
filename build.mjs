@@ -6,7 +6,7 @@ import { brand } from './src/data/site.mjs';
 import { services } from './src/data/services.mjs';
 import { home } from './src/pages/home.mjs';
 import { servicesPage, servicePage } from './src/pages/services.mjs';
-import { about, work, pricingPage, contact, notFound } from './src/pages/other.mjs';
+import { about, contact, notFound } from './src/pages/other.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, 'dist');
@@ -19,8 +19,6 @@ const pages = {
   'index.html': home(),
   'services.html': servicesPage(),
   'about.html': about(),
-  'work.html': work(),
-  'pricing.html': pricingPage(),
   'contact.html': contact(),
   '404.html': notFound(),
 };

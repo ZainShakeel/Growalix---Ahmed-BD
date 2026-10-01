@@ -1,7 +1,7 @@
 import { icon } from '../icons.mjs';
 import { page, ambient, eyebrow, ctaBand } from '../layout.mjs';
 import { experience } from '../data/site.mjs';
-import { heroVisual, heroStatsHtml, trusted, servicesSection, studioSection, workSection, whySection, processSection, testimonialsSection, pricingSection, postsSection, faqSection, contactFormSection } from '../sections.mjs';
+import { heroVisual, heroStatsHtml, trusted, servicesSection, studioSection, whySection, processSection, testimonialsSection, postsSection, faqSection, contactFormSection } from '../sections.mjs';
 
 export function home() {
   const root = '';
@@ -24,11 +24,9 @@ export function home() {
 ${trusted()}
 ${servicesSection(root)}
 ${studioSection(root)}
-${workSection(root)}
 ${whySection()}
 ${processSection()}
 ${testimonialsSection()}
-${pricingSection(root)}
 ${postsSection(root)}
 ${faqSection(root)}
 ${ctaBand(root)}

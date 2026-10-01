@@ -33,7 +33,7 @@ export function servicePage(s) {
     <div class="reveal">${eyebrow(s.tags.join(' · '))}</div>
     <h1 class="h-xl reveal" ${d(1)}>${s.headline} <span class="text-gradient">${s.highlight}</span></h1>
     <p class="lead reveal" ${d(2)}>${s.intro}</p>
-    <div class="hero-actions reveal" ${d(3)}><a class="btn btn-primary" href="${root}contact.html">Get a free audit ${icon('arrowUpRight')}</a><a class="btn btn-ghost" href="${root}pricing.html">See pricing</a></div>
+    <div class="hero-actions reveal" ${d(3)}><a class="btn btn-primary" href="${root}contact.html">Get a free audit ${icon('arrowUpRight')}</a><a class="btn btn-ghost" href="${root}services.html">All services</a></div>
     <div class="glass check-card reveal" ${d(4)} style="margin-top:2.5rem;max-width:560px;padding:.75rem 1.5rem">
       <div class="check-list" style="grid-template-columns:1fr">${s.outcomes.map((o) => `<div class="check-item"><span class="ck">${icon('check')}</span>${o}</div>`).join('')}</div>
     </div>

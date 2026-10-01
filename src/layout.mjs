@@ -1,29 +1,32 @@
 import { icon } from './icons.mjs';
 import { brand } from './data/site.mjs';
 import { services } from './data/services.mjs';
+import { leadPopup } from './sections.mjs';
 
 // Brand mark — same geometry as assets/logo.svg (unique gradient ids per use)
 let markId = 0;
 export function logoMark() {
   const id = `lg${markId++}`;
   return `<svg viewBox="0 0 112 112" aria-hidden="true"><defs>
-<linearGradient id="${id}r" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#8B5CF6"/><stop offset=".55" stop-color="#6D8CF8"/><stop offset="1" stop-color="#3EC5F6"/></linearGradient>
-<linearGradient id="${id}a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#3EC5F6"/></linearGradient></defs>
+<linearGradient id="${id}r" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#854ff7"/><stop offset=".55" stop-color="#6D8CF8"/><stop offset="1" stop-color="#29bdfd"/></linearGradient>
+<linearGradient id="${id}a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#854ff7"/><stop offset="1" stop-color="#29bdfd"/></linearGradient></defs>
 <path fill="url(#${id}r)" d="M61.99 12.7A46 46 0 1 0 97.23 42.27L79.37 48.77A27 27 0 1 1 58.69 31.41Z"/>
 <rect x="53" y="49" width="45" height="18" rx="3" fill="url(#${id}r)"/>
 <path d="M38 77 83 32" stroke="url(#${id}a)" stroke-width="15" stroke-linecap="round" fill="none"/>
 <polygon points="99,15 99,49 65,15" fill="url(#${id}a)"/></svg>`;
 }
 
+// Full-colour wordmark supplied by the client. growalixlogo-sm.png is a
+// 480×160 resize of the original growalixlogo.png (2172×724) — the header only
+// ever renders it ~115px wide, so the small file keeps every page light while
+// staying sharp on retina screens.
 export const logo = (root) =>
-  `<a href="${root}index.html" class="logo" aria-label="${brand.name} home">${logoMark()}<span class="logo-word">${brand.name}</span></a>`;
+  `<a href="${root}index.html" class="logo" aria-label="${brand.name} home"><img src="${root}assets/growalixlogo-sm.png" alt="${brand.name}" width="480" height="160" decoding="async"></a>`;
 
 const nav = [
   { label: 'Home', href: 'index.html', key: 'home' },
   { label: 'Services', href: 'services.html', key: 'services', dropdown: true },
-  { label: 'Work', href: 'work.html', key: 'work' },
   { label: 'About', href: 'about.html', key: 'about' },
-  { label: 'Pricing', href: 'pricing.html', key: 'pricing' },
   { label: 'Contact', href: 'contact.html', key: 'contact' },
 ];
 
@@ -60,7 +63,7 @@ function header(root, active) {
 export function ctaBand(root, title = 'Ready to grow faster?', body = 'Book a free 30-minute growth audit. We’ll review your funnel and show you the three quickest wins — no strings attached.') {
   return `<section class="section" style="padding-block:4rem"><div class="container"><div class="cta-band reveal">
   <div><h2 class="h-lg">${title}</h2><p>${body}</p></div>
-  <div class="actions"><a class="btn btn-white" href="${root}contact.html">Book a free audit ${icon('arrowUpRight')}</a><a class="btn btn-outline" href="${root}pricing.html">See pricing</a></div>
+  <div class="actions"><a class="btn btn-white" href="${root}contact.html">Book a free audit ${icon('arrowUpRight')}</a><a class="btn btn-outline" href="${root}services.html">See services</a></div>
 </div></div></section>`;
 }
 
@@ -81,7 +84,7 @@ function footer(root) {
     </div>
     ${col('Services', services.slice(0, 6).map((x) => [x.title, `${root}services/${x.slug}.html`]))}
     ${col('More services', services.slice(6).map((x) => [x.title, `${root}services/${x.slug}.html`]))}
-    ${col('Company', [['About', `${root}about.html`], ['Work', `${root}work.html`], ['Pricing', `${root}pricing.html`], ['Contact', `${root}contact.html`], [brand.email, `mailto:${brand.email}`]])}
+    ${col('Company', [['About', `${root}about.html`], ['Contact', `${root}contact.html`], [brand.email, `mailto:${brand.email}`], [brand.phone, `tel:${brand.phone.replace(/[^+\d]/g, '')}`]])}
   </div>
   <div class="foot-bottom"><span>© <span data-year>2026</span> ${brand.name}. All rights reserved.</span><span>${brand.location}</span></div>
   <div class="foot-word" aria-hidden="true">${brand.name}</div>
@@ -101,7 +104,7 @@ export function page({ root = '', title, description = brand.description, active
 <meta property="og:title" content="${full}">
 <meta property="og:description" content="${description}">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#8B5CF6">
+<meta name="theme-color" content="#854ff7">
 <link rel="icon" href="${root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -115,6 +118,7 @@ ${header(root, active)}
 ${body}
 </main>
 ${footer(root)}
+${leadPopup(root)}
 <script src="${root}assets/js/main.js" defer></script>
 </body>
 </html>

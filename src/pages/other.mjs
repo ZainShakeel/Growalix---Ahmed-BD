@@ -1,7 +1,7 @@
 import { icon } from '../icons.mjs';
 import { page, ctaBand } from '../layout.mjs';
 import { brand, faqs } from '../data/site.mjs';
-import { studioSection, workSection, whySection, processSection, testimonialsSection, pricingSection, faqSection, contactForm } from '../sections.mjs';
+import { studioSection, whySection, processSection, testimonialsSection, postsSection, faqSection, contactForm } from '../sections.mjs';
 import { pageHero } from './services.mjs';
 
 const d = (i) => `style="--d:${i * 80}ms"`;
@@ -12,34 +12,17 @@ export function about() {
 ${studioSection(root)}
 ${whySection()}
 ${processSection()}
+${postsSection(root)}
 ${testimonialsSection()}
 ${ctaBand(root)}`;
   return page({ root, title: 'About', active: 'about', body, path: 'about.html' });
-}
-
-export function work() {
-  const root = '';
-  const body = `${pageHero(root, [['Work']], 'Selected work', 'Results that earned<br><span class="text-gradient">a second look.</span>', 'A snapshot of campaigns, launches and growth systems we have built across outreach, search, paid media and product.')}
-${workSection(root, { head: false, linkToService: true })}
-${testimonialsSection()}
-${ctaBand(root, 'Your project could be next.', 'Share your goals and we’ll show you what a first 90 days with us looks like.')}`;
-  return page({ root, title: 'Work', active: 'work', body, path: 'work.html' });
-}
-
-export function pricingPage() {
-  const root = '';
-  const body = `${pageHero(root, [['Pricing']], 'Pricing', 'Clear pricing,<br><span class="text-gradient">serious results.</span>', 'Simple monthly plans for growing teams. Need a single service or a one-off project? We quote those too — usually within 48 hours.')}
-${pricingSection(root, { head: false })}
-${faqSection(root)}
-${ctaBand(root, 'Need a custom plan?', 'Mix and match any of our twelve services. Tell us what you need and we’ll build a plan around your budget.')}`;
-  return page({ root, title: 'Pricing', active: 'pricing', body, path: 'pricing.html' });
 }
 
 export function contact() {
   const root = '';
   const info = [
     ['mail', 'Email', brand.email, `mailto:${brand.email}`],
-    ['phone', 'Phone', brand.phone, `tel:${brand.phone.replace(/\s/g, '')}`],
+    ['phone', 'Phone', brand.phone, `tel:${brand.phone.replace(/[^+\d]/g, '')}`],
     ['whatsapp', 'WhatsApp', 'Chat with us', brand.whatsapp],
     ['mapPin', 'Location', brand.location],
     ['clock', 'Hours', brand.hours],

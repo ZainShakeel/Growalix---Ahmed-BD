@@ -1,13 +1,12 @@
 import { icon } from './icons.mjs';
 import { eyebrow, mock, logoMark } from './layout.mjs';
 import { services } from './data/services.mjs';
-import { brand, heroStats, trustedBy, whyUs, results, process, timeline, testimonials, pricing, faqs, work, posts } from './data/site.mjs';
+import { brand, heroStats, trustedBy, whyUs, results, process, timeline, testimonials, faqs, caseStudies } from './data/site.mjs';
 
 const d = (i, step = 80) => `style="--d:${i * step}ms"`;
-const slugFor = { Outreach: 'email-marketing', 'Paid Media': 'paid-media', SEO: 'seo-geo-aeo', 'Web & App': 'web-app-development' };
 
 // ---------- hero ----------
-const spark = (pts) => `<svg viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M${pts}" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/></svg>`;
+const spark = (pts) => `<svg viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M${pts}" fill="none" stroke="#854ff7" stroke-width="2" stroke-linecap="round"/></svg>`;
 const barHeights = [35, 52, 44, 60, 38, 70, 55, 48, 76, 62, 58, 84, 66, 72, 50, 88, 70, 64, 92, 78, 68, 95, 80, 74, 98, 86];
 
 export function heroVisual() {
@@ -26,7 +25,7 @@ export function heroVisual() {
         </div>
         <div class="chart-card">Pipeline growth<div class="bars">${barHeights.map((h, i) => `<i style="height:${h}%;animation-delay:${i * 30}ms"></i>`).join('')}</div></div>
         <div class="dash-row">
-          <div class="chart-card line-chart">Organic &amp; AI traffic<svg viewBox="0 0 200 70" preserveAspectRatio="none"><defs><linearGradient id="lcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".4"/><stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient></defs><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8V70H0Z" fill="url(#lcg)"/><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8" fill="none" stroke="#8b5cf6" stroke-width="2"/></svg></div>
+          <div class="chart-card line-chart">Organic &amp; AI traffic<svg viewBox="0 0 200 70" preserveAspectRatio="none"><defs><linearGradient id="lcg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#854ff7" stop-opacity=".4"/><stop offset="1" stop-color="#854ff7" stop-opacity="0"/></linearGradient></defs><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8V70H0Z" fill="url(#lcg)"/><path d="M0 60C20 55 30 40 50 45S80 25 100 30 140 10 160 18 190 5 200 8" fill="none" stroke="#854ff7" stroke-width="2"/></svg></div>
           <div class="chart-card">Channel mix<div class="donut"></div></div>
         </div>
       </div>
@@ -68,11 +67,14 @@ export function servicesSection(root, { head = true } = {}) {
 // ---------- studio / about ----------
 export function studioSection(root) {
   const chips = [
-    ['mail', 'Email', 'top:12%;left:8%'],
-    ['search', 'SEO / AEO', 'top:10%;right:8%'],
-    ['megaphone', 'Paid media', 'top:46%;left:4%'],
-    ['code', 'Web & apps', 'bottom:30%;right:5%'],
-    ['youtube', 'YouTube', 'bottom:12%;left:10%'],
+    ['mail', 'Email', 'top:6%;left:6%'],
+    ['search', 'SEO / AEO', 'top:4%;right:6%'],
+    ['linkedin', 'LinkedIn', 'top:26%;right:-2%'],
+    ['megaphone', 'Paid media', 'top:42%;left:0'],
+    ['target', 'Lead generation', 'bottom:34%;right:0'],
+    ['code', 'Web & apps', 'bottom:18%;left:2%'],
+    ['receipt', 'Accounts & subscriptions', 'bottom:2%;right:4%'],
+    ['youtube', 'YouTube', 'bottom:6%;left:14%'],
   ];
   return `<section class="section"><div class="container studio-grid">
   <div class="studio-visual reveal">
@@ -95,29 +97,10 @@ export function studioSection(root) {
 </div></section>`;
 }
 
-// ---------- work ----------
-export function workCard(root, w, i, linkToService) {
-  const href = linkToService ? `${root}services/${slugFor[w.cat]}.html` : `${root}work.html`;
-  return `<a class="work-card reveal${w.size === 'tall' ? ' tall' : ''}" ${d(i % 2)} data-cat="${w.cat}" href="${href}">
-  <div class="media">${mock(w.theme)}<span class="badge glass">${icon('award')}${w.cat}</span></div>
-  <div class="info"><div><span class="result">${w.result}</span><h3>${w.title}</h3></div><span class="arrow">${icon('arrowUpRight')}</span></div>
-</a>`;
-}
-
-export function workSection(root, { head = true, linkToService = false } = {}) {
-  const cats = ['all', ...new Set(work.map((w) => w.cat))];
-  const filters = `<div class="filters glass reveal" ${d(1)} data-filters>${cats.map((c, i) => `<button class="filter-btn${i === 0 ? ' on' : ''}" type="button" data-filter="${c}">${c === 'all' ? 'All' : c}</button>`).join('')}</div>`;
-  const col = (items) => `<div class="col">${items.map((w) => workCard(root, w, work.indexOf(w), linkToService)).join('')}</div>`;
-  return `<section class="section"><div class="container">
-  <div class="section-head split">${head ? `<div class="reveal">${eyebrow('Selected work')}<h2 class="h-lg">Results that earned<br><span class="text-gradient">a second look.</span></h2></div>` : '<div></div>'}<div style="justify-self:end">${filters}</div></div>
-  <div class="work-grid">${col([work[0], work[2]])}${col([work[1], work[3]])}</div>
-</div></section>`;
-}
-
 // ---------- why us ----------
 export const whySection = () => `<section class="section"><div class="container why-grid">
   <div>
-    <div class="reveal">${eyebrow('Why Growalix')}</div>
+    <div class="reveal">${eyebrow('Why work with us')}</div>
     <h2 class="h-lg reveal" ${d(1)} style="margin-top:1.5rem">The reasons clients <span class="text-gradient">stay for years.</span></h2>
     <p class="lead reveal" ${d(2)} style="margin-top:1.5rem">Most of our engagements turn into long-term partnerships. Here is what every service is measured against.</p>
     <div class="result-card reveal" ${d(3)}>${results
@@ -142,42 +125,32 @@ export const testimonialsSection = () => `<section class="section testi"><div cl
   <div>
     <div class="reveal">${eyebrow('Client stories')}</div>
     <h2 class="h-lg reveal" ${d(1)} style="margin-top:1.5rem">Proof, in their<br><span class="text-gradient">own words.</span></h2>
-    <div class="slider-nav reveal" ${d(2)}><button class="icon-btn" type="button" data-prev aria-label="Previous testimonial">${icon('arrowLeft')}</button><button class="icon-btn" type="button" data-next aria-label="Next testimonial">${icon('arrowRight')}</button></div>
+    <p class="lead reveal" ${d(2)} style="margin-top:1.5rem">One review from every service we run — ${testimonials.length} in total.</p>
+    <div class="slider-nav reveal" ${d(3)}><button class="icon-btn" type="button" data-prev aria-label="Previous testimonial">${icon('arrowLeft')}</button><button class="icon-btn" type="button" data-next aria-label="Next testimonial">${icon('arrowRight')}</button></div>
   </div>
   <div class="reveal" ${d(2)}>
     <div class="slides">${testimonials
-      .map((t) => `<figure class="slide glass"><div class="stars">${icon('star').repeat(5)}</div><blockquote>“${t.quote}”</blockquote><figcaption class="who"><span class="av">${t.initials}</span><div><strong>${t.name}</strong><span>${t.role}</span></div><span class="co">${t.company}</span></figcaption></figure>`)
+      .map((t) => `<figure class="slide glass"><div class="slide-top"><div class="stars">${icon('star').repeat(5)}</div><span class="svc-tag">${t.service}</span></div><blockquote>“${t.quote}”</blockquote><figcaption class="who"><span class="av">${t.initials}</span><div><strong>${t.name}</strong><span>${t.role}</span></div><span class="co">${t.company}</span></figcaption></figure>`)
       .join('')}</div>
-    <div class="dots">${testimonials.map((_, i) => `<button type="button" aria-label="Go to testimonial ${i + 1}"></button>`).join('')}</div>
+    <div class="dots">${testimonials.map((t, i) => `<button type="button" aria-label="Go to ${t.service} review"></button>`).join('')}</div>
   </div>
 </div></section>`;
 
-// ---------- pricing ----------
-export function pricingSection(root, { head = true } = {}) {
-  return `<section class="section" id="pricing"><div class="container">
-  <div class="section-head center" style="margin-bottom:0">${head ? `<div class="reveal">${eyebrow('Engagements')}<h2 class="h-lg">Pricing without the<br><span class="text-gradient">guesswork.</span></h2></div>` : ''}
-  <div class="billing glass reveal" ${d(1)} data-billing><button type="button" class="on" data-mode="monthly">Monthly</button><button type="button" data-mode="yearly">Yearly<small>-20%</small></button></div></div>
-  <div class="price-grid">${pricing
+// ---------- insights / case studies ----------
+export const postsSection = (root, { head = true } = {}) => `<section class="section" style="padding-top:0"><div class="container">
+  ${head ? `<div class="section-head split"><div class="reveal">${eyebrow('Insights')}<h2 class="h-lg">Case studies from the<br><span class="text-gradient">growth floor.</span></h2></div><div class="reveal" ${d(1)} style="justify-self:end"><a class="btn btn-ghost btn-sm" href="${root}services.html">All services ${icon('arrowUpRight')}</a></div></div>` : ''}
+  <div class="case-grid">${caseStudies
     .map(
-      (p, i) => `<div class="card price-card${p.featured ? ' featured' : ''} reveal" ${d(i)}>
-    ${p.featured ? `<span class="hot">${icon('sparkles')}Most chosen</span>` : ''}
-    <h3>${p.name}</h3><p class="blurb">${p.blurb}</p>
-    <div class="amount"><strong data-monthly="${p.monthly}">$${p.monthly.toLocaleString('en-US')}</strong><span>/mo</span></div>
-    <ul>${p.features.map((f) => `<li><span class="ck">${icon('check')}</span>${f}</li>`).join('')}</ul>
-    <a class="btn ${p.featured ? 'btn-white' : 'btn-primary'} btn-block" href="${root}contact.html">${p.cta}</a>
-  </div>`
+      (c, i) => `<article class="card case-card reveal" ${d(i)}>
+    <div class="media">${mock(c.theme)}<span class="badge glass">${icon('award')}${c.tag}</span></div>
+    <div class="body">
+      <h3>${c.title}</h3>
+      <p>${c.summary}</p>
+      <ul class="case-points">${c.points.map((p) => `<li><span class="ck">${icon('check')}</span>${p}</li>`).join('')}</ul>
+      <a class="more" href="${root}services/${c.slug}.html">Explore ${c.tag} ${icon('arrowUpRight')}</a>
+    </div>
+  </article>`
     )
-    .join('')}</div>
-  <p class="price-note">Month-to-month, cancel anytime. Ad spend and third-party tool subscriptions are billed separately.</p>
-</div></section>`;
-}
-
-// ---------- insights ----------
-const postSlug = { SEO: 'seo-geo-aeo', Outreach: 'email-marketing', 'Paid Media': 'paid-media' };
-export const postsSection = (root) => `<section class="section" style="padding-top:0"><div class="container">
-  <div class="section-head split"><div class="reveal">${eyebrow('Insights')}<h2 class="h-lg">Notes from the<br><span class="text-gradient">growth floor.</span></h2></div><div class="reveal" ${d(1)} style="justify-self:end"><a class="btn btn-ghost btn-sm" href="${root}services.html">All services ${icon('arrowUpRight')}</a></div></div>
-  <div class="grid-3">${posts
-    .map((p, i) => `<a class="card post-card reveal" ${d(i)} href="${root}services/${postSlug[p.tag]}.html"><div class="media">${mock(p.theme)}</div><div class="body"><div class="meta"><b>${p.tag}</b>${p.date}</div><h3>${p.title}</h3><span class="more">Explore the service ${icon('arrowUpRight')}</span></div></a>`)
     .join('')}</div>
 </div></section>`;
 
@@ -205,6 +178,28 @@ export const contactFormSection = (root) => `<section class="section" id="start"
   <div class="section-head center reveal">${eyebrow('Get started')}<h2 class="h-lg">Tell us what you need,<br><span class="text-gradient">we’ll map the plan.</span></h2><p class="lead">Send us your goals and we’ll reply within one business day with next steps and a free audit.</p></div>
   <div style="max-width:880px;margin-inline:auto">${contactForm(root, 'h')}</div>
 </div></section>`;
+
+// ---------- lead popup (shown once per visitor, 3s after load) ----------
+export function leadPopup(root) {
+  return `<div class="popup-backdrop" data-popup hidden>
+  <div class="popup glass" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <button class="icon-btn popup-close" type="button" data-popup-close aria-label="Close">${icon('x')}</button>
+    <span class="ic">${icon('sparkles')}</span>
+    <h2 id="popup-title" class="h-md">Get a <span class="text-gradient">free growth audit</span></h2>
+    <p class="muted">Tell us where you want to grow and we’ll send back the three quickest wins — no cost, no commitment.</p>
+    <form class="popup-form" data-contact-form data-to="${brand.email}"${brand.formEndpoint ? ` data-endpoint="${brand.formEndpoint}"` : ''} data-subject="Free audit request (popup)" novalidate>
+      <div class="field"><label for="p-name">Full name *</label><input id="p-name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="p-email">Work email *</label><input id="p-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="p-service">Service you need</label><select id="p-service" name="services"><option value="">Select a service</option>${services
+        .map((s) => `<option>${s.title}</option>`)
+        .join('')}</select></div>
+      <button class="btn btn-primary btn-block" type="submit">Get my free audit ${icon('arrowUpRight')}</button>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+    </form>
+    <button class="popup-dismiss" type="button" data-popup-close>No thanks, I’m just browsing</button>
+  </div>
+</div>`;
+}
 
 // ---------- faq ----------
 export const faqSection = (root, list = faqs) => `<section class="section" style="padding-top:0"><div class="container faq-grid">

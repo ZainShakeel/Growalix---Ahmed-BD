@@ -84,31 +84,30 @@
     auto();
   });
 
-  // Pricing monthly / yearly
-  $$('[data-billing]').forEach((wrap) => {
-    const btns = $$('button', wrap);
-    btns.forEach((btn) =>
-      btn.addEventListener('click', () => {
-        const yearly = btn.dataset.mode === 'yearly';
-        btns.forEach((b) => b.classList.toggle('on', b === btn));
-        $$('[data-monthly]').forEach((el) => {
-          const m = parseFloat(el.dataset.monthly);
-          el.textContent = '$' + Math.round(yearly ? m * 0.8 : m).toLocaleString('en-US');
-        });
-      })
-    );
-  });
-
-  // Work filter
-  $$('[data-filters]').forEach((bar) => {
-    const btns = $$('.filter-btn', bar);
-    btns.forEach((btn) =>
-      btn.addEventListener('click', () => {
-        const f = btn.dataset.filter;
-        btns.forEach((b) => b.classList.toggle('on', b === btn));
-        $$('.work-card').forEach((c) => c.classList.toggle('hide', f !== 'all' && c.dataset.cat !== f));
-      })
-    );
+  // Lead popup — shown once per visitor, 3s after load.
+  $$('[data-popup]').forEach((pop) => {
+    const KEY = 'gx-popup-seen';
+    let seen = false;
+    try { seen = localStorage.getItem(KEY) === '1'; } catch (e) {}
+    const close = () => {
+      pop.hidden = true;
+      document.body.classList.remove('no-scroll');
+      try { localStorage.setItem(KEY, '1'); } catch (e) {}
+    };
+    const open = () => {
+      if (pop.hidden === false) return;
+      pop.hidden = false;
+      document.body.classList.add('no-scroll');
+      const first = $('input', pop);
+      if (first) first.focus();
+    };
+    $$('[data-popup-close]', pop).forEach((b) => b.addEventListener('click', close));
+    pop.addEventListener('click', (ev) => { if (ev.target === pop) close(); });
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !pop.hidden) close(); });
+    // Mark as seen on submit so a converting visitor never sees it again.
+    const form = $('[data-contact-form]', pop);
+    if (form) form.addEventListener('submit', () => { try { localStorage.setItem(KEY, '1'); } catch (e) {} });
+    if (!seen) setTimeout(open, 3000);
   });
 
   // Contact form → opens the visitor's email client with a pre-filled message.
@@ -129,6 +128,9 @@
       const services = data.getAll('services').join(', ') || '—';
       const endpoint = form.dataset.endpoint;
       if (endpoint) {
+        // Formspree conventions: subject line + reply-to on the delivered email.
+        data.set('_subject', (form.dataset.subject || 'New project enquiry') + ' — ' + name);
+        data.set('_replyto', email);
         try {
           const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
           if (!res.ok) throw new Error();
@@ -150,7 +152,8 @@
         data.get('message') || '',
       ].join('\n');
       const to = form.dataset.to;
-      window.location.href = `mailto:${to}?subject=${encodeURIComponent('New project enquiry — ' + name)}&body=${encodeURIComponent(body)}`;
+      const subject = (form.dataset.subject || 'New project enquiry') + ' — ' + name;
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       msg.textContent = 'Opening your email app… if nothing happens, email us at ' + to;
     });
   });
