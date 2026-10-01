@@ -1,7 +1,7 @@
 import { icon } from '../icons.mjs';
 import { page, ctaBand } from '../layout.mjs';
 import { brand, faqs } from '../data/site.mjs';
-import { studioSection, whySection, processSection, testimonialsSection, postsSection, faqSection, contactForm } from '../sections.mjs';
+import { studioSection, whySection, processSection, testimonialsSection, postsSection, caseStudiesDetail, faqSection, contactForm } from '../sections.mjs';
 import { pageHero } from './services.mjs';
 
 const d = (i) => `style="--d:${i * 80}ms"`;
@@ -16,6 +16,22 @@ ${postsSection(root)}
 ${testimonialsSection()}
 ${ctaBand(root)}`;
   return page({ root, title: 'About', active: 'about', body, path: 'about.html' });
+}
+
+export function caseStudiesPage() {
+  const root = '';
+  const body = `${pageHero(root, [['Case Studies']], 'Case studies', 'The work behind<br><span class="text-gradient">the results.</span>', 'Three engagements in detail — what was broken, what we changed and what it took. Email, LinkedIn and paid media.')}
+${caseStudiesDetail(root)}
+${testimonialsSection()}
+${ctaBand(root, 'Want results like these?', 'Tell us where growth has stalled and we’ll show you what the first 90 days would look like.')}`;
+  return page({
+    root,
+    title: 'Case Studies',
+    active: 'case-studies',
+    body,
+    path: 'case-studies.html',
+    description: 'Three Growalix case studies in detail — rebuilding a B2B email engine, turning a founder LinkedIn profile into a lead source, and cutting wasted ad spend across Google and Meta.',
+  });
 }
 
 export function contact() {

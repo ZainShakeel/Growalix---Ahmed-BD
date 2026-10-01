@@ -5,6 +5,10 @@ dist/
 node_modules/
 npm-debug.log*
 
+# Full-resolution source artwork — the site ships the resized copies next to
+# it (assets/*-casestudy.jpg). Kept locally for re-exporting, never deployed.
+assets/_originals/
+
 # OS / editor
 .DS_Store
 Thumbs.db

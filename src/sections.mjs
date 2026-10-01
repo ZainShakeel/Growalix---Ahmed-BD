@@ -1,5 +1,5 @@
 import { icon } from './icons.mjs';
-import { eyebrow, mock, logoMark } from './layout.mjs';
+import { eyebrow, logoMark } from './layout.mjs';
 import { services } from './data/services.mjs';
 import { brand, heroStats, trustedBy, whyUs, results, process, timeline, testimonials, faqs, caseStudies } from './data/site.mjs';
 
@@ -138,11 +138,11 @@ export const testimonialsSection = () => `<section class="section testi"><div cl
 
 // ---------- insights / case studies ----------
 export const postsSection = (root, { head = true } = {}) => `<section class="section" style="padding-top:0"><div class="container">
-  ${head ? `<div class="section-head split"><div class="reveal">${eyebrow('Insights')}<h2 class="h-lg">Case studies from the<br><span class="text-gradient">growth floor.</span></h2></div><div class="reveal" ${d(1)} style="justify-self:end"><a class="btn btn-ghost btn-sm" href="${root}services.html">All services ${icon('arrowUpRight')}</a></div></div>` : ''}
+  ${head ? `<div class="section-head split"><div class="reveal">${eyebrow('Insights')}<h2 class="h-lg">Case studies from the<br><span class="text-gradient">growth floor.</span></h2></div><div class="reveal" ${d(1)} style="justify-self:end"><a class="btn btn-ghost btn-sm" href="${root}case-studies.html">Read the case studies ${icon('arrowUpRight')}</a></div></div>` : ''}
   <div class="case-grid">${caseStudies
     .map(
       (c, i) => `<article class="card case-card reveal" ${d(i)}>
-    <div class="media">${mock(c.theme)}<span class="badge glass">${icon('award')}${c.tag}</span></div>
+    <div class="media"><img src="${root}assets/${c.image}" alt="" width="900" height="665" loading="lazy" decoding="async"><span class="badge glass">${icon('award')}${c.tag}</span></div>
     <div class="body">
       <h3>${c.title}</h3>
       <p>${c.summary}</p>
@@ -178,6 +178,23 @@ export const contactFormSection = (root) => `<section class="section" id="start"
   <div class="section-head center reveal">${eyebrow('Get started')}<h2 class="h-lg">Tell us what you need,<br><span class="text-gradient">we’ll map the plan.</span></h2><p class="lead">Send us your goals and we’ll reply within one business day with next steps and a free audit.</p></div>
   <div style="max-width:880px;margin-inline:auto">${contactForm(root, 'h')}</div>
 </div></section>`;
+
+// ---------- case studies, full detail (Case Studies page) ----------
+// Alternating image/text rows, so three studies carry a page on their own.
+export const caseStudiesDetail = (root) => `<section class="section" style="padding-top:3rem"><div class="container case-rows">${caseStudies
+  .map(
+    (c, i) => `<article class="case-row reveal${i % 2 ? ' flip' : ''}">
+  <div class="shot"><img src="${root}assets/${c.image}" alt="" width="900" height="665" loading="lazy" decoding="async"><span class="badge glass">${icon('award')}${c.tag}</span></div>
+  <div class="copy">
+    <span class="num">${String(i + 1).padStart(2, '0')}</span>
+    <h2 class="h-md">${c.title}</h2>
+    <p class="lead">${c.summary}</p>
+    <ul class="case-points">${c.points.map((p) => `<li><span class="ck">${icon('check')}</span>${p}</li>`).join('')}</ul>
+    <a class="btn btn-ghost btn-sm" href="${root}services/${c.slug}.html">Explore ${c.tag} ${icon('arrowUpRight')}</a>
+  </div>
+</article>`
+  )
+  .join('')}</div></section>`;
 
 // ---------- lead popup (shown once per visitor, 3s after load) ----------
 export function leadPopup(root) {

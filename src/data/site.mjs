@@ -203,13 +203,14 @@ export const faqs = [
   { q: 'How do you report results?', a: 'You get a live dashboard plus a weekly or monthly summary focused on pipeline, cost per lead, revenue and next actions.' },
 ];
 
-// Case studies shown in the Insights section — one per headline service.
-// `slug` points at the matching service page; `theme` picks the mock visual.
+// Case studies shown in the Insights section and on the Case Studies page.
+// `slug` points at the matching service page; `image` is the artwork in
+// assets/ (a 900px JPG resized from the client's original PNG).
 export const caseStudies = [
   {
     tag: 'Email Marketing',
     slug: 'email-marketing',
-    theme: 'mail',
+    image: 'emailmarketing-casestudy.jpg',
     title: 'Rebuilding a B2B inbox that kept landing in spam',
     summary:
       'A SaaS client was sending thousands of cold emails a month with almost nothing to show for it. We moved them to dedicated sending domains, warmed every inbox, rewrote the sequence around one clear offer and cut the send volume by half. Replies started arriving in the first fortnight, and the calendar filled from there.',
@@ -218,7 +219,7 @@ export const caseStudies = [
   {
     tag: 'LinkedIn Marketing',
     slug: 'linkedin-marketing',
-    theme: 'seo',
+    image: 'linkedinmarketing-casestudy.jpg',
     title: 'Turning a quiet founder profile into a steady lead source',
     summary:
       'A consulting firm had a well-connected founder and a dormant profile. We rebuilt the profile as a landing page, set a two-post-a-week rhythm on the problems their buyers actually search for, and paired it with measured connection requests and a human follow-up in the inbox — no automation spam.',
@@ -227,7 +228,7 @@ export const caseStudies = [
   {
     tag: 'Paid Media',
     slug: 'paid-media',
-    theme: 'ads',
+    image: 'paidmedia-casestudy.jpg',
     title: 'Cutting wasted ad spend across Google and Meta',
     summary:
       'Budget was spread thin over dozens of near-identical campaigns with no conversion tracking worth trusting. We fixed the tracking first, consolidated the account structure, killed the search terms that never converted and rebuilt the creative around the offer that already worked. Cost per lead fell in the first two months.',
