@@ -170,4 +170,179 @@
   );
 
   $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
+
+  // ---- Chat assistant -----------------------------------------------------
+  // Answers from the knowledge base in src/data/chat.mjs (serialised into the
+  // page). After ASK_AFTER questions it asks for an email, then sends the whole
+  // transcript to brand.email through the same Formspree endpoint the forms use.
+  (function chat() {
+    const panel = $('[data-chat]');
+    const dataEl = $('[data-chat-data]');
+    if (!panel || !dataEl) return;
+
+    let kb;
+    try { kb = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+    const ASK_AFTER = 5;
+    const log = $('[data-chat-log]', panel);
+    const chips = $('[data-chat-chips]', panel);
+    const form = $('[data-chat-form]', panel);
+    const input = $('[data-chat-input]', panel);
+    const openBtn = $('[data-chat-open]');
+    const transcript = [];
+    let asked = 0;       // visitor questions answered so far
+    let stage = 'chat';  // 'chat' → 'email' → 'done'
+    let fbIdx = 0;
+
+    const scroll = () => { log.scrollTop = log.scrollHeight; };
+
+    function add(text, who) {
+      const row = document.createElement('div');
+      row.className = 'msg ' + who;
+      row.textContent = text;
+      log.appendChild(row);
+      scroll();
+      return row;
+    }
+
+    // Shows the typing dots, then replaces them with the reply.
+    function reply(text, delay) {
+      const dots = document.createElement('div');
+      dots.className = 'msg bot typing';
+      dots.innerHTML = '<i></i><i></i><i></i>';
+      log.appendChild(dots);
+      scroll();
+      setTimeout(() => {
+        dots.remove();
+        add(text, 'bot');
+        transcript.push('Assistant: ' + text);
+      }, delay || 500 + Math.random() * 400);
+    }
+
+    // Score each entry by its matching keywords. `weight` lets a specific topic
+    // outrank a broad one: "Do you do LinkedIn?" hits both the generic services
+    // entry ("do you do") and the LinkedIn entry, and should answer about
+    // LinkedIn. Entries default to weight 1; broad ones are marked down in
+    // src/data/chat.mjs.
+    function answerFor(q) {
+      const text = ' ' + q.toLowerCase().replace(/[^\w\s/&]/g, ' ') + ' ';
+      let best = null;
+      let bestScore = 0;
+      for (const entry of kb.knowledge) {
+        let score = 0;
+        for (const k of entry.match) {
+          if (text.includes(' ' + k) || text.includes(k + ' ')) score += k.length;
+        }
+        score *= entry.weight == null ? 1 : entry.weight;
+        if (score > bestScore) { bestScore = score; best = entry; }
+      }
+      if (best) return best.answer;
+      const f = kb.fallbacks[fbIdx % kb.fallbacks.length];
+      fbIdx++;
+      return f;
+    }
+
+    function showChips(list) {
+      chips.innerHTML = '';
+      (list || []).forEach((s) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'chip-btn';
+        b.textContent = s;
+        b.addEventListener('click', () => { input.value = s; form.requestSubmit(); });
+        chips.appendChild(b);
+      });
+    }
+
+    function askForEmail() {
+      stage = 'email';
+      input.type = 'email';
+      input.placeholder = 'you@company.com';
+      showChips([]);
+      reply('Before we go further — what’s the best email to reach you on? I’ll have someone follow up with answers specific to your business.', 700);
+    }
+
+    // Deliver the lead. Falls back to a mailto draft when no endpoint is set.
+    function sendLead(email) {
+      const body = [
+        'New chat lead from the website',
+        '',
+        'Email: ' + email,
+        'Page: ' + location.href,
+        'Questions asked: ' + asked,
+        '',
+        '--- Conversation ---',
+        ...transcript,
+      ].join('\n');
+
+      if (kb.endpoint) {
+        const fd = new FormData();
+        fd.set('name', 'Website chat visitor');
+        fd.set('email', email);
+        fd.set('_replyto', email);
+        fd.set('_subject', 'New chat lead — ' + email);
+        fd.set('message', body);
+        fetch(kb.endpoint, { method: 'POST', body: fd, headers: { Accept: 'application/json' } }).catch(() => {});
+        return true;
+      }
+      // No backend configured — open the operator's own mail client instead.
+      window.location.href =
+        'mailto:' + kb.email + '?subject=' + encodeURIComponent('New chat lead — ' + email) + '&body=' + encodeURIComponent(body);
+      return false;
+    }
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const val = input.value.trim();
+      if (!val) return;
+      add(val, 'me');
+      input.value = '';
+
+      if (stage === 'email') {
+        if (!/^\S+@\S+\.\S+$/.test(val)) {
+          reply('That doesn’t look like a valid email — mind checking it?');
+          return;
+        }
+        transcript.push('Visitor email: ' + val);
+        const sent = sendLead(val);
+        stage = 'done';
+        input.type = 'text';
+        input.placeholder = 'Ask another question…';
+        reply(
+          sent
+            ? 'Got it — thanks! Someone from the team will be in touch within one business day. Ask me anything else meanwhile.'
+            : 'Thanks! I’ve opened an email for you to send. Ask me anything else meanwhile.',
+          600
+        );
+        return;
+      }
+
+      transcript.push('Visitor: ' + val);
+      asked++;
+      reply(answerFor(val));
+      showChips([]);
+      if (stage === 'chat' && asked >= ASK_AFTER) setTimeout(askForEmail, 1400);
+    });
+
+    function open() {
+      panel.hidden = false;
+      openBtn.classList.add('on');
+      openBtn.setAttribute('aria-expanded', 'true');
+      if (!log.childElementCount) {
+        add(kb.greeting, 'bot');
+        transcript.push('Assistant: ' + kb.greeting);
+        showChips(kb.suggestions);
+      }
+      setTimeout(() => input.focus(), 260);
+    }
+    function close() {
+      panel.hidden = true;
+      openBtn.classList.remove('on');
+      openBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    openBtn.addEventListener('click', () => (panel.hidden ? open() : close()));
+    $$('[data-chat-close]', panel).forEach((b) => b.addEventListener('click', close));
+    document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && !panel.hidden) close(); });
+  })();
 })();

@@ -2,6 +2,7 @@ import { icon } from './icons.mjs';
 import { eyebrow, logoMark } from './layout.mjs';
 import { services } from './data/services.mjs';
 import { brand, heroStats, trustedBy, whyUs, results, process, timeline, testimonials, faqs, caseStudies } from './data/site.mjs';
+import { knowledge, fallbacks, greeting, suggestions } from './data/chat.mjs';
 
 const d = (i, step = 80) => `style="--d:${i * step}ms"`;
 
@@ -66,21 +67,69 @@ export function servicesSection(root, { head = true } = {}) {
 
 // ---------- studio / about ----------
 export function studioSection(root) {
-  const chips = [
-    ['mail', 'Email', 'top:6%;left:6%'],
-    ['search', 'SEO / AEO', 'top:4%;right:6%'],
-    ['linkedin', 'LinkedIn', 'top:26%;right:-2%'],
-    ['megaphone', 'Paid media', 'top:42%;left:0'],
-    ['target', 'Lead generation', 'bottom:34%;right:0'],
-    ['code', 'Web & apps', 'bottom:18%;left:2%'],
-    ['receipt', 'Accounts & subscriptions', 'bottom:2%;right:4%'],
-    ['youtube', 'YouTube', 'bottom:6%;left:14%'],
+  // Services ride three concentric orbits around the brand mark. Each dot sits
+  // on its own rotating arm (`--a` sets the starting angle) and is counter-
+  // rotated so it stays upright; two of them carry an expanded label card.
+  // Labels sit on rotating rings, so any two on *different* rings eventually
+  // pass each other. Keeping them apart means separating the rings vertically:
+  // each ring gets its own narrow band of angles (top, middle, bottom) that it
+  // never leaves, because the ring itself does not spin — only the beads do,
+  // travelling along a path the labels are pinned to.
+  const orbits = [
+    {
+      size: 40,
+      secs: 30,
+      band: 'a',
+      dots: [{ a: 222, icon: 'linkedin', label: 'LinkedIn' }],
+    },
+    {
+      size: 58,
+      secs: 44,
+      band: 'b',
+      dots: [
+        { a: 25, icon: 'search', label: 'SEO / AEO' },
+        { a: 335, icon: 'mail', label: 'Email Marketing', note: 'Outreach that lands in the inbox', lead: true },
+        { a: 155, icon: 'megaphone', label: 'Paid Media', note: 'Google, Meta, TikTok & LinkedIn', lead: true },
+      ],
+    },
+    {
+      size: 76,
+      secs: 58,
+      band: 'c',
+      dots: [
+        { a: 72, icon: 'code', label: 'Web & apps' },
+        { a: 108, icon: 'target', label: 'Lead generation' },
+        { a: 252, icon: 'youtube', label: 'YouTube' },
+        { a: 288, icon: 'pen', label: 'Content' },
+      ],
+    },
   ];
+
+  // The ring and its labels are static; a lone travelling bead gives the motion.
+  const orbitHtml = orbits
+    .map(
+      (o) => `<div class="orbit" style="--size:${o.size}%;--secs:${o.secs}s">
+      <span class="path"></span>
+      <span class="runner${o.reverse ? ' rev' : ''}"><span class="spark"></span></span>
+      ${o.dots
+        .map(
+          (dt) => `<span class="arm" style="--a:${dt.a}deg"><span class="node${dt.lead ? ' lead' : ''}">
+        <span class="bead"></span>
+        <span class="tagc glass">${icon(dt.icon)}<span><strong>${dt.label}</strong>${dt.note ? `<em>${dt.note}</em>` : ''}</span></span>
+      </span></span>`
+        )
+        .join('')}
+    </div>`
+    )
+    .join('');
+
   return `<section class="section"><div class="container studio-grid">
   <div class="studio-visual reveal">
-    <span class="ring" style="width:78%;aspect-ratio:1"></span><span class="ring" style="width:54%;aspect-ratio:1"></span>
-    <span class="core float-slow">${logoMark()}</span>
-    ${chips.map(([ic, t, pos], i) => `<span class="chip glass float" style="${pos};animation-delay:-${i * 1.3}s">${icon(ic)}${t}</span>`).join('')}
+    <div class="orbits" aria-hidden="true">
+      ${orbitHtml}
+      <span class="core float-slow">${logoMark()}</span>
+      <span class="core-glow"></span>
+    </div>
     <div class="studio-badge glass"><strong class="text-gradient">12</strong><span>Growth services</span></div>
   </div>
   <div>
@@ -195,6 +244,33 @@ export const caseStudiesDetail = (root) => `<section class="section" style="padd
 </article>`
   )
   .join('')}</div></section>`;
+
+// ---------- floating WhatsApp button + chat assistant ----------
+// The knowledge base is serialised into the page so the widget answers
+// without a backend; see src/data/chat.mjs to edit what it knows.
+export function floatingWidgets() {
+  const wa = `${brand.whatsapp}?text=${encodeURIComponent(`Hi ${brand.name}, I'd like to know more about your services.`)}`;
+  const data = JSON.stringify({ knowledge, fallbacks, greeting, suggestions, email: brand.email, endpoint: brand.formEndpoint || '' });
+  return `<div class="floaties">
+  <a class="fab wa" href="${wa}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">${icon('whatsapp')}<span class="fab-tip">Chat on WhatsApp</span></a>
+  <button class="fab chat-open" type="button" data-chat-open aria-label="Open chat assistant" aria-expanded="false">${icon('sparkles', 'o')}${icon('x', 'c')}<span class="fab-tip">Ask a question</span></button>
+</div>
+<div class="chat-panel glass" data-chat hidden>
+  <div class="chat-head">
+    <span class="av">${icon('sparkles')}</span>
+    <div><strong>${brand.name} assistant</strong><span>Typically replies instantly</span></div>
+    <button class="icon-btn" type="button" data-chat-close aria-label="Close chat">${icon('x')}</button>
+  </div>
+  <div class="chat-log" data-chat-log role="log" aria-live="polite"></div>
+  <div class="chat-chips" data-chat-chips></div>
+  <form class="chat-form" data-chat-form novalidate>
+    <label class="sr-only" for="chat-input">Your question</label>
+    <input id="chat-input" data-chat-input placeholder="Ask about our services…" autocomplete="off">
+    <button class="icon-btn send" type="submit" aria-label="Send">${icon('send')}</button>
+  </form>
+</div>
+<script type="application/json" data-chat-data>${data.replace(/</g, '\\u003c')}</script>`;
+}
 
 // ---------- lead popup (shown once per visitor, 3s after load) ----------
 export function leadPopup(root) {

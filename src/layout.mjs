@@ -1,7 +1,7 @@
 import { icon } from './icons.mjs';
 import { brand } from './data/site.mjs';
 import { services } from './data/services.mjs';
-import { leadPopup } from './sections.mjs';
+import { leadPopup, floatingWidgets } from './sections.mjs';
 
 // Brand mark — same geometry as assets/logo.svg (unique gradient ids per use)
 let markId = 0;
@@ -120,6 +120,7 @@ ${body}
 </main>
 ${footer(root)}
 ${leadPopup(root)}
+${floatingWidgets()}
 <script src="${root}assets/js/main.js" defer></script>
 </body>
 </html>
