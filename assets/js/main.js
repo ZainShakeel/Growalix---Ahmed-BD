@@ -219,24 +219,60 @@
       }, delay || 500 + Math.random() * 400);
     }
 
+    // Words too common to tell entries apart; ignored when scoring.
+    const STOP = ' a an and are as at be can do does for from have how i if in is it me my of on or our so that the their them they to us was we what when where which who why will with you your '.split(' ');
+
+    // Damerau-Levenshtein distance, capped — so a typo still matches. Counting
+    // a swap as one edit (not two) is what catches the common ones: "emial"
+    // for email, "mcuh" for much.
+    function near(a, b) {
+      if (Math.abs(a.length - b.length) > 2) return false;
+      const rows = [];
+      for (let i = 0; i <= a.length; i++) rows.push(new Array(b.length + 1).fill(0));
+      for (let i = 0; i <= a.length; i++) rows[i][0] = i;
+      for (let j = 0; j <= b.length; j++) rows[0][j] = j;
+      for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          let v = Math.min(rows[i - 1][j] + 1, rows[i][j - 1] + 1, rows[i - 1][j - 1] + cost);
+          if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+            v = Math.min(v, rows[i - 2][j - 2] + 1); // transposition
+          }
+          rows[i][j] = v;
+        }
+      }
+      return rows[a.length][b.length] <= (a.length > 6 ? 2 : 1);
+    }
+
     // Score each entry by its matching keywords. `weight` lets a specific topic
     // outrank a broad one: "Do you do LinkedIn?" hits both the generic services
     // entry ("do you do") and the LinkedIn entry, and should answer about
     // LinkedIn. Entries default to weight 1; broad ones are marked down in
-    // src/data/chat.mjs.
+    // src/data/chat.mjs. Below MIN_SCORE we admit we don't know rather than
+    // return a confident-sounding but wrong answer.
+    const MIN_SCORE = 3.2;
     function answerFor(q) {
-      const text = ' ' + q.toLowerCase().replace(/[^\w\s/&]/g, ' ') + ' ';
+      const clean = q.toLowerCase().replace(/[^\w\s/&]/g, ' ').replace(/\s+/g, ' ').trim();
+      const text = ' ' + clean + ' ';
+      const words = clean.split(' ').filter((w) => w.length > 2 && STOP.indexOf(w) === -1);
       let best = null;
       let bestScore = 0;
+
       for (const entry of kb.knowledge) {
         let score = 0;
         for (const k of entry.match) {
-          if (text.includes(' ' + k) || text.includes(k + ' ')) score += k.length;
+          if (text.includes(' ' + k + ' ')) score += k.length * 1.5;   // whole phrase
+          else if (text.includes(k)) score += k.length;                 // substring
+          else if (k.indexOf(' ') === -1 && k.length > 3) {
+            // single keyword — allow one typo
+            for (const w of words) { if (near(w, k)) { score += k.length * 0.8; break; } }
+          }
         }
         score *= entry.weight == null ? 1 : entry.weight;
         if (score > bestScore) { bestScore = score; best = entry; }
       }
-      if (best) return best.answer;
+
+      if (best && bestScore >= MIN_SCORE) return best.answer;
       const f = kb.fallbacks[fbIdx % kb.fallbacks.length];
       fbIdx++;
       return f;
@@ -254,12 +290,63 @@
       });
     }
 
+    // Instead of a plain line of text, drop in a small card explaining what the
+    // email is for, with its own field — it reads as an offer rather than an
+    // interrogation, and is skippable.
     function askForEmail() {
       stage = 'email';
-      input.type = 'email';
-      input.placeholder = 'you@company.com';
       showChips([]);
-      reply('Before we go further — what’s the best email to reach you on? I’ll have someone follow up with answers specific to your business.', 700);
+      const dots = document.createElement('div');
+      dots.className = 'msg bot typing';
+      dots.innerHTML = '<i></i><i></i><i></i>';
+      log.appendChild(dots);
+      scroll();
+      setTimeout(() => {
+        dots.remove();
+        const card = document.createElement('div');
+        card.className = 'lead-card';
+        card.innerHTML =
+          '<strong>Want the detailed answer?</strong>' +
+          '<p>Leave your email and a specialist will follow up with advice specific to your business — plus a free growth audit. No newsletter spam.</p>' +
+          '<div class="lead-row"><input type="email" placeholder="you@company.com" autocomplete="email" data-lead-email>' +
+          '<button type="button" class="btn btn-primary btn-sm" data-lead-send>Send</button></div>' +
+          '<p class="lead-err" role="status" aria-live="polite"></p>' +
+          '<button type="button" class="lead-skip" data-lead-skip>No thanks, keep chatting</button>';
+        log.appendChild(card);
+        scroll();
+        transcript.push('Assistant: [asked for email]');
+
+        const emailIn = $('[data-lead-email]', card);
+        const err = $('.lead-err', card);
+        const submit = () => {
+          const v = emailIn.value.trim();
+          if (!/^\S+@\S+\.\S+$/.test(v)) {
+            err.textContent = 'That doesn’t look like a valid email — mind checking it?';
+            emailIn.focus();
+            return;
+          }
+          transcript.push('Visitor email: ' + v);
+          const sent = sendLead(v);
+          card.remove();
+          stage = 'done';
+          input.placeholder = 'Ask another question…';
+          reply(
+            sent
+              ? 'Got it — thanks! Someone from the team will be in touch within one business day. Ask me anything else meanwhile.'
+              : 'Thanks! I’ve opened an email for you to send. Ask me anything else meanwhile.',
+            500
+          );
+        };
+        $('[data-lead-send]', card).addEventListener('click', submit);
+        emailIn.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); submit(); } });
+        $('[data-lead-skip]', card).addEventListener('click', () => {
+          card.remove();
+          stage = 'done';
+          transcript.push('Visitor: [skipped email]');
+          reply('No problem — ask away.', 400);
+        });
+        setTimeout(() => emailIn.focus(), 200);
+      }, 700);
     }
 
     // Deliver the lead. Falls back to a mailto draft when no endpoint is set.
@@ -297,25 +384,6 @@
       if (!val) return;
       add(val, 'me');
       input.value = '';
-
-      if (stage === 'email') {
-        if (!/^\S+@\S+\.\S+$/.test(val)) {
-          reply('That doesn’t look like a valid email — mind checking it?');
-          return;
-        }
-        transcript.push('Visitor email: ' + val);
-        const sent = sendLead(val);
-        stage = 'done';
-        input.type = 'text';
-        input.placeholder = 'Ask another question…';
-        reply(
-          sent
-            ? 'Got it — thanks! Someone from the team will be in touch within one business day. Ask me anything else meanwhile.'
-            : 'Thanks! I’ve opened an email for you to send. Ask me anything else meanwhile.',
-          600
-        );
-        return;
-      }
 
       transcript.push('Visitor: ' + val);
       asked++;

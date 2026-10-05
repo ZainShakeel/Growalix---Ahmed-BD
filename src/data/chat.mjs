@@ -156,9 +156,85 @@ export const knowledge = [
       'Growalix is a full-service digital growth agency. We started with one channel and one rule — never run a campaign we wouldn’t pay for ourselves — and that now covers 12 services with specialists running each one.',
   },
   {
-    match: ['contract', 'commitment', 'cancel', 'lock', 'notice'],
+    match: ['contract', 'commitment', 'cancel', 'lock', 'notice', 'minimum term', 'tied in'],
     answer:
       'No long lock-ins. Scope and terms are agreed up front, and most clients stay because the work compounds — not because a contract traps them.',
+  },
+  {
+    match: ['example', 'examples', 'case study', 'case studies', 'portfolio', 'past work', 'previous work', 'samples', 'proof', 'results you got'],
+    answer:
+      'Yes — the Case Studies page walks through three engagements in detail: rebuilding a B2B email engine that kept landing in spam, turning a quiet founder LinkedIn profile into a lead source, and cutting wasted ad spend across Google and Meta. Each one covers what was broken and exactly what we changed.',
+  },
+  {
+    match: ['different', 'why you', 'why choose', 'other agencies', 'competitors', 'better than', 'stand out', 'unique'],
+    answer:
+      'Three things clients tell us. One, specialists per channel rather than one generalist stretched across twelve. Two, you own every account, domain and asset outright. Three, we report pipeline and revenue instead of impressions — if a channel isn’t paying for itself we say so rather than quietly keep billing.',
+  },
+  {
+    match: ['guarantee', 'guaranteed', 'promise', 'results guaranteed', 'roi guarantee'],
+    answer:
+      'We don’t promise a specific number — anyone who does is guessing. What we commit to is an honest audit before you spend anything, clear reporting on what is and isn’t working, and the discipline to cut what doesn’t pay rather than keep it running.',
+  },
+  {
+    match: ['country', 'countries', 'location', 'based', 'where are you', 'timezone', 'time zone', 'remote', 'worldwide', 'international'],
+    answer:
+      'We’re remote-first and work with clients worldwide. Communication runs through a shared channel plus scheduled calls, so timezones have never been the blocker — we flex to yours.',
+  },
+  {
+    match: ['pay', 'payment', 'invoice', 'billing', 'bank', 'wire', 'paypal', 'how do we pay'],
+    answer:
+      'Engagements are billed monthly in advance, with the scope and amount agreed in writing before anything starts. Ad spend and third-party tool subscriptions sit on your own accounts, so you’re never paying us a markup on them.',
+  },
+  {
+    match: ['nda', 'confidential', 'confidentiality', 'contract sign', 'agreement', 'legal'],
+    answer:
+      'Happy to sign an NDA before we see anything sensitive — just send yours over, or we can provide one. A written scope of work covers every engagement either way.',
+  },
+  {
+    match: ['not happy', 'unhappy', 'refund', 'money back', 'go wrong', 'dissatisfied', 'complaint', 'if it doesnt work'],
+    answer:
+      'Tell us early and we fix it — that’s what the weekly reporting is for, so problems surface in week two rather than month three. There are no long lock-ins, so if it still isn’t working you’re free to stop and you keep every account and asset.',
+  },
+  {
+    match: ['communicate', 'communication', 'how often', 'meetings', 'calls', 'updates', 'talk', 'contact us', 'slack', 'check in'],
+    answer:
+      'You get a shared Slack or WhatsApp channel with real people on it, plus a weekly or monthly call depending on the engagement. No ticket queues, and no waiting days for an answer.',
+  },
+  {
+    match: ['team', 'how big', 'who works', 'staff', 'people', 'specialists', 'freelancers', 'in house'],
+    answer:
+      'A lean senior team — each channel is run by someone who works in it daily rather than a generalist juggling all twelve. You deal with the people doing the work, not an account manager relaying messages.',
+  },
+  {
+    match: ['small business', 'startup', 'small company', 'solo', 'budget is small', 'just starting'],
+    answer:
+      'Yes. Plenty of our clients start with a single channel and a modest budget, then add more once it’s paying for itself. We’ll tell you honestly if a budget is too small to work rather than take it anyway.',
+  },
+  {
+    match: ['trial', 'pilot', 'test first', 'try before', 'small project', 'start small', 'start with a trial'],
+    weight: 1.4, // "can we start with a trial" also hits the start-timing entry
+    answer:
+      'A single-channel engagement is the usual way in — it’s small enough to prove the approach and gives you real numbers before committing further. We also quote one-off projects.',
+  },
+  {
+    match: ['access', 'logins', 'credentials', 'permissions', 'admin'],
+    answer:
+      'We work inside your accounts with the access level a given channel needs, never by creating assets we hold. Everything stays in your ownership from day one — that’s the point.',
+  },
+  {
+    match: ['fix', 'existing', 'already running', 'take over', 'inherit', 'audit our', 'current campaigns'],
+    answer:
+      'Often the fastest win. We start with an audit of what’s already running — most accounts have budget leaking somewhere obvious — and fix that before proposing anything new.',
+  },
+  {
+    match: ['industry', 'industries', 'niche', 'b2b', 'b2c', 'saas', 'ecommerce clients', 'sector', 'vertical', 'what kind of clients', 'who do you work with'],
+    answer:
+      'We work across B2B SaaS, professional services, e-commerce and local service businesses. The channel mix changes a lot between them, which is exactly what the discovery call is for.',
+  },
+  {
+    match: ['use ai', 'using ai', 'ai tools', 'artificial intelligence', 'automation', 'automated', 'chatgpt tools', 'automate'],
+    answer:
+      'We use automation where it saves time — data work, reporting, parts of content production — and keep humans on strategy, copy and anything a client will read. The AI side also shows up in our SEO work: getting you cited by ChatGPT, Perplexity and AI Overviews.',
   },
   {
     match: ['hi', 'hello', 'hey', 'salam', 'assalam', 'good morning', 'good evening'],
