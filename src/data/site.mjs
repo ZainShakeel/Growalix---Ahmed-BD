@@ -14,12 +14,11 @@ export const brand = {
   email: 'info@growalix.com',
   phone: '+1 (559) 554-0666',
   whatsapp: 'https://wa.me/15595540666',
-  // Form backend. All submissions are delivered to brand.email.
-  // Create a free form at https://formspree.io (set the recipient to
-  // info@growalix.com) and paste the endpoint below, e.g.
-  // 'https://formspree.io/f/xxxxxxx'. Until then forms fall back to opening
-  // the visitor's email app with the enquiry pre-filled to info@growalix.com.
-  formEndpoint: '',
+  // Form backend. Every submission — the contact form, the home "Start a
+  // project" form, the lead popup and the chat assistant — is delivered to
+  // brand.email through this endpoint. Empty it to fall back to opening the
+  // visitor's own email app with the enquiry pre-filled.
+  formEndpoint: 'https://formspree.io/f/xoevgbjr',
   location: 'Remote-first · Serving clients worldwide',
   hours: 'Mon – Sat · 9:00 – 18:00',
   socials: {
